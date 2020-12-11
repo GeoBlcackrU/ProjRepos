@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/SportLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EFEFEF"
+    tools:context=".sportFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/mornBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/yellow"
+                android:drawableLeft="@drawable/morn"
+                android:text="@string/morn"
+                android:textColor="@color/design_default_color_background"
+                android:textIsSelectable="false"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/warmBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/orange"
+                android:drawableLeft="@drawable/warm"
+                android:text="@string/warm"
+                android:textColor="@color/design_default_color_background"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/trainBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/peach"
+                android:drawableLeft="@drawable/train"
+                android:text="@string/train"
+                android:textColor="@color/design_default_color_background"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/flexBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/rose"
+                android:drawableLeft="@drawable/flex"
+                android:text="@string/flex"
+                android:textColor="@color/design_default_color_background"
+                android:textSize="24sp" />
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

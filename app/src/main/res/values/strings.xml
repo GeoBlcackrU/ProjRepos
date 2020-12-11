@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">project</string>
+    <string name="sport" translatable="false">фитнес</string>
+    <string name="settings" translatable="false">профиль</string>
+    <string name="weight"> Ваш вес</string>
+    <string name="complexity">Сложность:</string>
+    <string name="train">тренировка</string>
+    <string name="morn">зарядка</string>
+    <string name="warm">разминка</string>
+    <string name="flex">растяжка</string>
+</resources>

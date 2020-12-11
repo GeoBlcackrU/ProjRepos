@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="designFirst"> #D9D9D9</color>
+    <color name="designSecond"> #C291F2</color>
+    <color name="designThird"> #AE8FD9</color>
+    <color name="designFourth"> #A0A3D9</color>
+    <color name="designFifth"> #96B3D9</color>
+    <color name="rose">#F34C77</color>
+    <color name="peach">#FA646D</color>
+    <color name="orange">#FD8164</color>
+    <color name="mostYellow">#DFA14C</color>
+    <color name="yellow">#FCC546</color>
+    <color name="lightGreen">#49F294</color>
+    <color name="green">#11A653</color>
+    <color name="lightRed">#F25749</color>
+    <color name="red">#A62C21</color>
+</resources>
