@@ -58,11 +58,12 @@ public class MainActivity extends AppCompatActivity {
         }
         if(fragment != null)
         {
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fagmensviewer, fragment).commit();
             if(animation != null)
-            findViewById(R.id.fagmensviewer).startAnimation(animation);
+                findViewById(R.id.fagmensviewer).startAnimation(animation);
         }
 
 

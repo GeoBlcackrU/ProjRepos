@@ -11,8 +11,17 @@
     <color name="orange">#FD8164</color>
     <color name="mostYellow">#DFA14C</color>
     <color name="yellow">#FCC546</color>
-    <color name="lightGreen">#49F294</color>
-    <color name="green">#11A653</color>
+    <color name="lightGreen">#A3FFCB</color>
+    <color name="green">#7BB393</color>
+    <color name="littlePurple">#E4BDFF</color>
+    <color name="darkLittlePurple">#9972B3</color>
+    <color name="pastel">#FFF0D6</color>
     <color name="lightRed">#F25749</color>
     <color name="red">#A62C21</color>
+    <color name="purple">#D168FF</color>
+    <color name="purple1">#B850FF</color>
+    <color name="purple2">#A240FC</color>
+    <color name="purple3">#8D18FF</color>
+    <color name="purple4">#6A0DC4</color>
+    <color name="whitePaper">#EFEFEF</color>
 </resources>

@@ -46,7 +46,7 @@ public class SettingsFragment extends Fragment {
 
 
         //иницилизация ключей с настройками
-        sharedPreferences =getActivity().getSharedPreferences("settingsPreferences", Context.MODE_PRIVATE);
+        sharedPreferences = getActivity().getSharedPreferences("settingsPreferences", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
         complexity =  sharedPreferences.getInt("ComplexityKey", 0);
@@ -54,7 +54,7 @@ public class SettingsFragment extends Fragment {
 
 
         complexityText = getView().findViewById(R.id.complexityText);
-            complexityText.setText("Вы будете делать " + (int)Math.round(6 + complexity*0.24) + " приседаний");
+            complexityText.setText("Вы будете делать " + (int)Math.round(6 + complexity*0.04*6) + " приседаний");
 
         text = getView().findViewById(R.id.TextInput);
 
@@ -104,7 +104,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b)
             {
-                int num = (int)Math.round(6 + i*0.24);
+                int num = (int)Math.round(6 + i*0.04 * 6);
                 complexityText.setText("Вы будете делать " + num + " приседаний");
             }
 

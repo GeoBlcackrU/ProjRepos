@@ -8,4 +8,7 @@
     <string name="morn">зарядка</string>
     <string name="warm">разминка</string>
     <string name="flex">растяжка</string>
+    <string name="NEXT">далее</string>
+    <string name="SKIP">пропустить</string>
+    <string name="TO_NOW">к текущему</string>
 </resources>
