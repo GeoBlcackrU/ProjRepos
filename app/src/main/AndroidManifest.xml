@@ -9,7 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".last"></activity>
+        <service
+            android:name=".NotifyService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":NotifyProcess" />
+
+        <activity android:name=".last" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
@@ -20,6 +26,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".Fit" />
+
+        <receiver
+            android:name=".alarm"
+            android:enabled="true"
+            android:exported="false" >
+        </receiver>
     </application>
 
 </manifest>

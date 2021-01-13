@@ -206,6 +206,7 @@ boolean canLook = true;
         loader = new ActivityLoader(scenario);
         createActivitiesInList(loader.GetLengthOfActivities());
         SetActive(0);
+
         final TextView uiTimer = findViewById(R.id.timer);
       th =  new Thread(new Runnable() {
             @Override
@@ -283,9 +284,9 @@ boolean canLook = true;
                         while (!canLook)
                         {
                             Date newDate = new Date();
-                            int sec = (int)(newDate.getTime() - date.getTime()) / 1000 % 61;
+                            int sec = complexity - (int)(newDate.getTime() - date.getTime()) / 1000 % 61;
                             number.setText(String.valueOf(sec));
-                            if(sec >= complexity )
+                            if(sec <=0 )
                             {
                                 Button btn = findViewById(R.id.NextOrSkipBtn);
                                 btn.setText("далее");
@@ -338,7 +339,10 @@ boolean canLook = true;
             cursor = DB.rawQuery("SELECT * FROM ex", null);
             scenarioLoader(scenario);
             CreateActivities();
+            cursor.close();
+            DB.close();
         }
+
         //рандомные цифры для теста
         private void scenarioLoader(int scenario)
         {
@@ -361,32 +365,10 @@ boolean canLook = true;
 
         public void CreateActivities()
         {
-            // создание сортированного массива упражнений для выгрузки упражнений в O(n)
-            int[] a = new int[arrayOfEx.length];
-
-            for(int i = 0; i < a.length; i++)
-                a[i] = arrayOfEx[i];
-
-            Arrays.sort(a);
-            Map<Integer, EX> ExList = new HashMap<>(); //хэш для обращения в O(1)
-
-            int i = 0;
-            cursor.moveToNext();
-              while (!cursor.isAfterLast() && i < a.length )
-            {
-                if(cursor.getInt(0) == a[i])
-                {
-                    ExList.put(cursor.getInt(0), new EX(cursor.getInt(0),cursor.getInt(1) ,cursor.getString(2), cursor.getString(3), cursor.getInt(4) == 1, cursor.getInt(5), cursor.getInt(6), cursor.getFloat(7)));
-                    i++;
-                }
-                else
-                {
-                    cursor.moveToNext();
-                }
-            }
-
-            for (int ofEx : arrayOfEx) {
-                list.add(ExList.get(ofEx));
+           //шоб я сдох
+            for(int a:arrayOfEx) {
+                cursor.moveToPosition(a);
+                list.add(cursor.getInt(0), new EX(cursor.getInt(0),cursor.getInt(1) ,cursor.getString(2), cursor.getString(3), cursor.getInt(4) == 1, cursor.getInt(5), cursor.getInt(6), cursor.getFloat(7)));
             }
         }
         public int GetLengthOfActivities() {
@@ -415,6 +397,7 @@ boolean canLook = true;
                 this.mode = mode;
                 this.modifier = modifier;
             }
+
         }
     }
 }

@@ -3,6 +3,7 @@
     <string name="sport" translatable="false">фитнес</string>
     <string name="settings" translatable="false">профиль</string>
     <string name="weight"> Ваш вес</string>
+    <string name="height">Ваш рост</string>
     <string name="complexity">Сложность:</string>
     <string name="train">тренировка</string>
     <string name="morn">зарядка</string>
