@@ -35,10 +35,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:text="4:20"
             android:textAlignment="textEnd"
             android:textColor="@color/purple2"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:text="4:20" />
 
         <TextView
             android:id="@+id/about"
@@ -46,6 +46,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Здесь будет текст" />
+
+        <TextView
+            android:id="@+id/adviceText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center" />
 
         <View
             android:id="@+id/divider"
@@ -57,7 +63,6 @@
             android:id="@+id/To_Do"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:ems="10"
             android:inputType="numberSigned"
             android:onClick="OnClickTimer"
@@ -70,6 +75,7 @@
             android:id="@+id/divider2"
             android:layout_width="match_parent"
             android:layout_height="2dp"
+            android:layout_marginBottom="10dp"
             android:background="?android:attr/listDivider" />
 
         <Button

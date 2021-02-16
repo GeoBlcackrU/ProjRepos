@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">project</string>
+    <string name="app_name">FitProject</string>
     <string name="sport" translatable="false">фитнес</string>
     <string name="settings" translatable="false">профиль</string>
     <string name="weight"> Ваш вес</string>

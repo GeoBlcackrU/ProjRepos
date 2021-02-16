@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug;
@@ -19,6 +20,7 @@ import android.util.Pair;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -73,7 +75,8 @@ boolean canLook = true;
             int quantity = (int) Math.round(loader.list.get(id).to_do + sp.getInt("ComplexityKey", 0) * loader.list.get(id).modifier *loader.list.get(id).to_do );
             to_do.setText(String.valueOf(quantity % 2 == 0 ? quantity : quantity + 1));
             now_to_time = false;
-
+            TextView  tV = findViewById(R.id.adviceText);
+            tV.setText("");
         }
         else
         {
@@ -103,14 +106,22 @@ boolean canLook = true;
                     Button btn = findViewById(R.id.NextOrSkipBtn);
                     btn.setText("пропустить");
                     now_to_time = true;
+                    TextView  tV = findViewById(R.id.adviceText);
+                    tV.setText("На время \nНажмите, чтобы запустить таймер");
 
+                }
+                else
+                {
+                    now_to_time = false;
+                    TextView  tV = findViewById(R.id.adviceText);
+                    tV.setText("");
                 }
 
         }
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+   // @RequiresApi(api = Build.VERSION_CODES.O)
     void createActivitiesInList(int a) {
         //парамерты для отступа в layout
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -167,7 +178,9 @@ boolean canLook = true;
             TextView tx = new TextView(this);
             tx.setText(loader.list.get(i).name);
             tx.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            tx.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                tx.setAutoSizeTextTypeWithDefaults(TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
+            }
             ln.addView(tx);
             //чтобы отступ был
             if (i > 0)
@@ -182,12 +195,12 @@ boolean canLook = true;
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+   // @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fit);
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         about = findViewById(R.id.about);
         //БД
         DataBaseOpen dataBaseOpen = new DataBaseOpen(this);
@@ -211,11 +224,17 @@ boolean canLook = true;
       th =  new Thread(new Runnable() {
             @Override
             public void run() {
-                Date date = new Date();
+                final Date date = new Date();
                 while (true) {
-                    Date dateNow = new Date();
+                    final Date dateNow = new Date();
 
-                    uiTimer.setText(String.valueOf((dateNow.getTime() - date.getTime()) / 1000 / 60 + ":" + (dateNow.getTime() - date.getTime()) / 1000 % 60));
+                   // uiTimer.setText(String.valueOf((dateNow.getTime() - date.getTime()) / 1000 / 60 + ":" + (dateNow.getTime() - date.getTime()) / 1000 % 60));
+                    uiTimer.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            uiTimer.setText(String.valueOf((dateNow.getTime() - date.getTime()) / 1000 / 60 + ":" + (dateNow.getTime() - date.getTime()) / 1000 % 60));
+                        }
+                    });
                     if (!isFit) {
                         int min = (int) (dateNow.getTime() - date.getTime()) / 1000 / 60;
                         int sec = (int) (dateNow.getTime() - date.getTime()) / 1000 % 60;
@@ -276,26 +295,43 @@ boolean canLook = true;
             {
                 canLook = false;
                 now_to_time = false;
+                MediaPlayer mpStart =  new MediaPlayer();
+                MediaPlayer mpEnd = new MediaPlayer();
+                mpEnd = MediaPlayer.create(this, R.raw.end);
+                MediaPlayer.create(this, R.raw.start).start();
+                final MediaPlayer finalMpEnd = mpEnd;
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Date date = new Date();
-                        TextView number = findViewById(R.id.To_Do);
+                        final Date date = new Date();
+                        final TextView number = findViewById(R.id.To_Do);
+
                         while (!canLook)
                         {
-                            Date newDate = new Date();
-                            int sec = complexity - (int)(newDate.getTime() - date.getTime()) / 1000 % 61;
-                            number.setText(String.valueOf(sec));
+
+                             int sec;
+                            final Date newDate = new Date();
+                            sec = complexity - (int)(newDate.getTime() - date.getTime()) / 1000 % 61;
+                             number.setText(String.valueOf(sec));
+                             if(sec == 3)
+                                 finalMpEnd.start();
                             if(sec <=0 )
                             {
-                                Button btn = findViewById(R.id.NextOrSkipBtn);
-                                btn.setText("далее");
+                                final Button btn = findViewById(R.id.NextOrSkipBtn);
+                                btn.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        btn.setText("далее");
+                                    }
+                                });
                                 break;
                             }
                         }
                     }
                 }).start();
             }
+
+
         }
 
 
@@ -349,26 +385,57 @@ boolean canLook = true;
             switch (scenario)
             {
                 case 0:
-                    arrayOfEx = new int[]{0,1,2,3,4,5,6,7,8,9};
+                    arrayOfEx = new int[]{0, 12, 25, 5, 6, 14, 4, 21, 10, 9 };
                     break;
                 case 1:
-                    arrayOfEx = new int[]{2,3,4,3,2};
+                    arrayOfEx = new int[]{9, 19, 20, 17, 16, 11, 24};
                     break;
                 case 2:
-                    arrayOfEx = new int[]{7,6,5,2,2,1};
+                    arrayOfEx = new int[]{15, 22, 13, 2, 5, 7, 8, 4, 1, 23, 10 };
                     break;
                 case 3:
-                    arrayOfEx = new int[]{2,2,2,2,2,2,2,2};
+                    arrayOfEx = new int[]{19,17, 20, 16, 15, 10, 23, 18, 24 };
                     break;
             }
         }
 
+      //  public void CreateActivities()
+     //   {
+           //шоб я сдох
+           // for(int a:arrayOfEx) {
+               // cursor.moveToPosition(a);
+              //  list.add(cursor.getInt(0), new EX(cursor.getInt(0),cursor.getInt(1) ,cursor.getString(2), cursor.getString(3), cursor.getInt(4) == 1, cursor.getInt(5), cursor.getInt(6), cursor.getFloat(7)));
+           // }
+
+        //}
         public void CreateActivities()
         {
-           //шоб я сдох
-            for(int a:arrayOfEx) {
-                cursor.moveToPosition(a);
-                list.add(cursor.getInt(0), new EX(cursor.getInt(0),cursor.getInt(1) ,cursor.getString(2), cursor.getString(3), cursor.getInt(4) == 1, cursor.getInt(5), cursor.getInt(6), cursor.getFloat(7)));
+            // создание сортированного массива упражнений для выгрузки упражнений в O(n)
+            int[] a = new int[arrayOfEx.length];
+
+            for(int i = 0; i < a.length; i++)
+                a[i] = arrayOfEx[i];
+
+            Arrays.sort(a);
+            Map<Integer, EX> ExList = new HashMap<>(); //хэш для обращения в O(1)
+
+            int i = 0;
+            cursor.moveToNext();
+            while (!cursor.isAfterLast() && i < a.length )
+            {
+                if(cursor.getInt(0) == a[i])
+                {
+                    ExList.put(cursor.getInt(0), new EX(cursor.getInt(0),cursor.getInt(1) ,cursor.getString(2), cursor.getString(3), cursor.getInt(4) == 1, cursor.getInt(5), cursor.getInt(6), cursor.getFloat(7)));
+                    i++;
+                }
+                else
+                {
+                    cursor.moveToNext();
+                }
+            }
+
+            for (int ofEx : arrayOfEx) {
+                list.add(ExList.get(ofEx));
             }
         }
         public int GetLengthOfActivities() {

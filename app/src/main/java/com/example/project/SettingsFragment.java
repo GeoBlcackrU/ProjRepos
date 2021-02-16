@@ -1,5 +1,6 @@
 package com.example.project;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -154,6 +155,14 @@ public class SettingsFragment extends Fragment {
 
                         }
                         editor.putInt("Weight", Integer.parseInt(weightInput.getText().toString()));
+                        try {
+
+                                editor.putInt("Height", Integer.parseInt(heightInput.getText().toString()));
+                            }
+                            catch (Exception ignored)
+                            {
+
+                            }
                         editor.apply();
                         IMTcalc(sharedPreferences.getInt("Height",0), sharedPreferences.getInt("Weight",0));
                     }
@@ -174,21 +183,21 @@ public class SettingsFragment extends Fragment {
             {
                 if(i == keyEvent.KEYCODE_ENTER)
                 {
-                    if(heightInput.getText().toString().length() > 0 )
-                    {
+                    if(heightInput.getText().toString().length() > 0 ) {
                         int num = Integer.parseInt(heightInput.getText().toString());
 
-                        if (num > 200 || num < 110)
-                        {
+                        if (num > 200 || num < 110) {
                             num = num > 200 ? 200 : 110;
                             heightInput.setText(String.valueOf(num));
                             heightInput.setError("введите корректный рост");
 
-                        }
-                        else
-                        {
+                        } else {
 
                         }
+                        try
+                        {
+                        editor.putInt("Weight", Integer.parseInt(weightInput.getText().toString()));
+                        } catch (Exception ignored) {}
                         editor.putInt("Height", Integer.parseInt(heightInput.getText().toString()));
                         editor.apply();
                         IMTcalc(sharedPreferences.getInt("Height",0), sharedPreferences.getInt("Weight",0));
@@ -306,7 +315,7 @@ public class SettingsFragment extends Fragment {
 
 
 
-                    getActivity().startService(new Intent(getContext(), NotifyService.class));
+                    //getActivity().startService(new Intent(getContext(), NotifyService.class));
 
                         dialogFragment dialog = new dialogFragment();
                         dialog.show(getFragmentManager(), "custom");
@@ -333,7 +342,7 @@ public class SettingsFragment extends Fragment {
             database.delete("notifications", "_id = ?", new String[]{String.valueOf(id)});
             LoadNotificationList();
         }
-        private void LoadNotificationList()
+        public void LoadNotificationList()
         {
             ids = new ArrayList<>();
             Cursor cursor;
@@ -353,9 +362,9 @@ public class SettingsFragment extends Fragment {
                 final TextView tV = new TextView(getContext());
                 ln.addView(tV);
                 parentView.addView(ln);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.gravity = Gravity.RIGHT;
-                layoutParams.weight = 1.0f;
+               // LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+             //   layoutParams.gravity = Gravity.RIGHT;
+              //  layoutParams.weight = 1.0f;
                 ImageButton imageButton = new ImageButton(getContext());
                 imageButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageButton.setBackground(getResources().getDrawable(R.drawable.delete));
@@ -367,7 +376,7 @@ public class SettingsFragment extends Fragment {
                     }
 
                 });
-                ln.addView(imageButton, layoutParams);
+                ln.addView(imageButton);
                 //информация о времени
                  StringBuilder notifText = new StringBuilder(cursor.getInt(1) + " : " + cursor.getInt(2) + "    ");
                 //информация о днях недели
@@ -482,6 +491,7 @@ public class SettingsFragment extends Fragment {
           }
           else break;
       }
+
       TV.setText(stringBuilder);
     }
 

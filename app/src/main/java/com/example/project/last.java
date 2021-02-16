@@ -33,8 +33,8 @@ public class last extends AppCompatActivity {
         int[] intTimer = getIntent().getExtras().getIntArray("timer");
         timer.setText(String.valueOf(intTimer[0]) + ":" + String.valueOf(intTimer[1]));
         sp = last.this.getSharedPreferences("settingsPreferences", Context.MODE_PRIVATE);
-        float calorie = ((float )intTimer[0] +(float) intTimer[1] /60) / 60 * 4 * sp.getInt("Weight", 0);
-        calories.setText(String.valueOf(calorie));
+        float calorie = ((float )intTimer[0] +(float) intTimer[1] /60) / 60 * 4 * sp.getInt("Weight", 60);
+        calories.setText(String.valueOf( Math.round(calorie)));
         SaveIntoDataBase(intTimer[0]* 60 + intTimer[1], Math.round(calorie));
         SeekBar complexityBar = findViewById(R.id.complexityBar);
         complexityBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

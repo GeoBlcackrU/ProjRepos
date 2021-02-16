@@ -47,6 +47,7 @@ public class dialogFragment extends DialogFragment {
 
                 SettingsFragment.isOk(checkedItemsArray, database);
 
+
             }
 
         }) .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {

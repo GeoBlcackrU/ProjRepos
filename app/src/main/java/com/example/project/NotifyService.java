@@ -38,6 +38,7 @@ public class NotifyService extends Service {
       //  Toast.makeText(this, "Эта хрень запустила команду", Toast.LENGTH_SHORT).show();
         Calendar calendar;
 
+        i = 0;
         SQLiteDatabase database;
         DataBaseOpen dataBaseOpen = new DataBaseOpen(this);
         try {
@@ -51,28 +52,30 @@ public class NotifyService extends Service {
         } catch (SQLException mSQLException) {
             throw mSQLException;
         }
+        Cursor cursor = null;
+        try {
+            cursor = database.rawQuery("SELECT * FROM notifications", null);
+            cursor.moveToNext();
+        }
+        catch (SQLException e)
+        {
+            stopSelf();
+        }
 
-        Cursor cursor = database.rawQuery("SELECT * FROM notifications", null);
 
-                cursor.moveToNext();
             calendar = Calendar.getInstance();
-            int a = 0;
             while (!cursor.isAfterLast()) {
-                a++;
                 if (cursor.getInt(1) == calendar.get(Calendar.HOUR_OF_DAY) && cursor.getInt(2) == calendar.get(Calendar.MINUTE) && cursor.getInt(calendar.get(Calendar.DAY_OF_WEEK) + 1)==1)
                 {
-                    CreateNotify(cursor);
+                   i =  CreateNotify(cursor);
                 }
                 cursor.moveToNext();
             }
-            if(a == 0)
-                i = 0;
-            else  i = 1;
         stopSelf();
        return  Service.START_STICKY;
     }
 
- private  void  CreateNotify(Cursor cursor)
+ private  int  CreateNotify(Cursor cursor)
  {
      notificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
      Intent notificationIntent = new Intent(this, MainActivity.class);
@@ -81,7 +84,7 @@ public class NotifyService extends Service {
              PendingIntent.FLAG_CANCEL_CURRENT);
      NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(this, "CHANNEL")
              .setAutoCancel(true)
-             .setSmallIcon(R.drawable.exercise0)
+             .setSmallIcon(R.drawable.alarm)
              .setWhen(System.currentTimeMillis())
              .setContentTitle("Время заниматься")
              .setContentText("Вы запланировали занятие на " + cursor.getInt(1) + " : "+ cursor.getInt(2))
@@ -93,7 +96,7 @@ public class NotifyService extends Service {
          notificationManager.createNotificationChannel(notificationChannel);
      }
      notificationManager.notify(1, nBuilder.build());
-
+     return  2;
  }
 
     @Override
@@ -104,17 +107,17 @@ public class NotifyService extends Service {
 
     @Override
     public void onDestroy() {
-       // Toast.makeText(this, "Эта хрень закрылась", Toast.LENGTH_SHORT).show();
-        if(i == 1) {
-            AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-            Intent alarmIntent = new Intent(this, alarm.class);
-            PendingIntent pi = PendingIntent.getBroadcast(this.getApplicationContext(), 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Toast.makeText(this, "Эта хрень закрылась", Toast.LENGTH_SHORT).show();
+        int period;
+        period = i == 2 ? 60000 : 30000;
+        AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent = new Intent(this, alarm.class);
+        PendingIntent pi = PendingIntent.getBroadcast(this.getApplicationContext(), 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            if (Build.VERSION.SDK_INT >= 23) {
-                am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 45000, pi);
-            } else {
-                am.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 45000, pi);
-            }
+        if (Build.VERSION.SDK_INT >= 23) {
+            am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + period, pi);
+        } else {
+            am.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + period, pi);
         }
         super.onDestroy();
     }

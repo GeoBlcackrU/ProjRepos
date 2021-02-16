@@ -6,8 +6,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -21,13 +25,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startService(new Intent(this, NotifyService.class));
         setContentView(R.layout.activity_main);
+
        Button btn =  findViewById(R.id.sportButton);
        btn.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
 
+        AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        Intent alarmIntent = new Intent(this, alarm.class);
+        PendingIntent pi = PendingIntent.getBroadcast(this.getApplicationContext(), 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        if (Build.VERSION.SDK_INT >= 23) {
+            am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 60000, pi);
+        } else {
+            am.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 60000, pi);
+        }
     }
+
 
     public void PressButtonSwitcherFragment(View view)
     {
